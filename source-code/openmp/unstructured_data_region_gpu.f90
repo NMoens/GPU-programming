@@ -30,7 +30,7 @@ do iter = 1, nr_iters
   !$OMP target teams distribute parallel do
   do ii = 1, n
     do jj = 1,n
-      a((ii-1)*n + jj)  = b((ii-1)*n + jj)
+      a((ii-1)*n + jj) = a((ii-1)*n + jj) + b((ii-1)*n + jj)
     end do
   end do
   !$OMP end target teams distribute parallel do

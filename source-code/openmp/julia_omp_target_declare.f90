@@ -5,9 +5,11 @@ implicit none
 integer :: ii, jj
 integer, parameter :: max_iters = 255
 
+!> Statement to declare module subroutines on target as kernels 
 !$OMP declare target
 contains
 
+!> Subroutine to initialise Z
 subroutine init_z(Z, n)
 
 implicit none
@@ -38,6 +40,7 @@ end do
 
 end subroutine init_z
 
+!> Subroutine to iterate Z
 subroutine iterate_z(Z, countv, n, C)
 
 implicit none
@@ -49,6 +52,7 @@ complex, intent(in) :: C
 
 integer :: idx
 
+!> Loop over grid
 !$OMP target teams distribute parallel do
 do ii = 1, n
   do jj = 1, n
@@ -87,11 +91,13 @@ integer :: ii, jj
 dev_nr = omp_get_default_device()
 write(error_unit,*) "Using device ", dev_nr
 
-!$OMP target data map(tofrom: countv(1:n*n)) map(alloc : Z(1:n*n))
+!> Get data from target device, allocate Z on device
+!$OMP target data map(from: countv(1:n*n)) map(alloc : Z(1:n*n))
 call init_z(Z, N)
 call iterate_z(Z, countv, n, C)
 !$OMP end target data
 
+!> print
 do ii = 1, n
   do jj = 1, n
     write(*,"(I3)",advance="no") countv((ii-1)*n + jj)

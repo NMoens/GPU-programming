@@ -21,11 +21,11 @@ integer :: dev_nr
 integer :: idx
 integer :: ii, jj
 
+!> Check external device
 dev_nr = omp_get_default_device()
 write(error_unit,*) "Using device ", dev_nr
 
-!> Memory allocation check???
-
+!>  Main calculation
 delta = (maxv - minv)/n
 !$OMP target teams distribute parallel do map(tofrom: countv(1:n*n))
 do ii = 1, n 
@@ -43,6 +43,7 @@ do ii = 1, n
 end do
 !$OMP end target teams distribute parallel do 
 
+!> Print Julia set image
 do ii = 1, n
   do jj = 1, n
     write(*,"(I3)",advance="no") countv((ii-1)*n + jj)
