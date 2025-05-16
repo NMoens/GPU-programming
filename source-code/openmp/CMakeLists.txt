@@ -21,3 +21,13 @@ foreach(c_file ${c_files})
     target_compile_options(${executable_name} PRIVATE -mp)
     target_link_options(${executable_name} PRIVATE -mp)
 endforeach()
+
+#file(GLOB f90_files  "${CMAKE_CURRENT_SOURCE_DIR}/*_gpu.f90")
+#foreach(c_file ${f90_files})
+#    get_filename_component(base_name ${f90_file} NAME_WE)
+#    set(executable_name "${base_name}.fexe")
+#    add_executable(${executable_name} ${f90_file})
+#    target_compile_options(${executable_name} PRIVATE -mp=gpu)
+#    target_link_options(${executable_name} PRIVATE -mp=gpu)
+#endforeach()
+
