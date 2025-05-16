@@ -13,7 +13,7 @@ num_devices = omp_get_num_devices()
 write(*,*) "Number of available devices", num_devices
 
 !> Check wether additional device is found
-!$OMP target
+!$OMP target thread_limit(256) num_teams(64)
 if (omp_is_initial_device()) then
     write(*,*) "Running on host"
 else
